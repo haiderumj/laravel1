@@ -29,9 +29,9 @@ Route::middleware([CheckAge::class])->group(function () {
         return view('about');
     });
 });
-// Route::get('/about', function () {
-//     return view('about');
-// });
+Route::get('/about', function () {
+    return view('about');
+});
 
 Route::get('/contact-dhhdhfhdhfdhf', [ContactController::class, 'index'])->name('con');
 Route::get('/category/all', [CategoryController::class, 'AllCat'])->name('all.category');
