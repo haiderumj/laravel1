@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 use App\Models\Brand;
-use Image;
+use App\Models\Multipic;
+use Intervention\Image\Facades\Image;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -102,5 +103,42 @@ public function StoreBrand(Request $request)
          Brand::find($id)->delete();
         return redirect()->back()->with('success', 'Brand delete successfully');
     }
+
+    /////////////////// Multi image ////////////////////
+
+    public function Multipic(){
+        $images = Multipic::all();
+        return view ('admin.multipic.index',compact('images'));
+    }
+
+    public function storeImg(Request $request)
+{
+    
+
+    $images = $request->file('image');
+
+    if ($images) {
+        foreach ($images as $image) {
+            $name_gen = uniqid() . '.' . $image->getClientOriginalExtension();
+            $image->move('image/multi/', $name_gen);
+        
+            $last_image = 'image/multi/' . $name_gen;
+
+            // Resize the image
+        $resizedImage = Image::make(public_path($last_image))->fit(300, 200);
+        $resizedImage->save();
+        
+            Multipic::create([
+                'image' => $last_image,
+                'created_at' => Carbon::now()
+            ]);
+        }
+    }
+    
+    
+    
+
+    return redirect()->back()->with('success', 'Brand Inserted Successfully');
+}
 
 }
