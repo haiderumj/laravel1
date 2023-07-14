@@ -17,8 +17,12 @@ use App\Models\User;
 |
 */
 
+// Route::get('/email/verify', function () {
+//     return view('auth.verify-email');
+// })->middleware('auth')->name('verification.notice');
+////////////////
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
 
 Route::get('/home', function () {
@@ -70,6 +74,7 @@ Route::middleware([
 ])->group(function () {
     Route::get('/dashboard', function () {
         $users = User::all();
-        return view('dashboard', compact('users'));
+        return view('admin.index', compact('users'));
     })->name('dashboard');
 });
+Route::get('/user/logout', [BrandController::class, 'Logout'])->name('user.logout');

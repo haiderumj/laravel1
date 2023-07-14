@@ -6,13 +6,21 @@ use App\Models\Multipic;
 use Intervention\Image\Facades\Image;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-
+use Auth;
 class BrandController extends Controller
 {
+
+    public function __construct()
+{
+    $this->middleware('auth');
+}
+
+
    public function AllBrand(){
     $brands = Brand::latest()->paginate(5);
      return view('admin.brand.index' , compact('brands'));  
    }
+   
 //////////stor//////////////
 public function StoreBrand(Request $request)
 {
@@ -139,6 +147,11 @@ public function StoreBrand(Request $request)
     
 
     return redirect()->back()->with('success', 'Brand Inserted Successfully');
+}
+
+public function Logout(){
+    Auth::logout();
+    return Redirect()->route('login')->with('success','User Logout');
 }
 
 }
